@@ -32,11 +32,19 @@ public class PreferenceTriggerHelper {
         for( Preference__c PreferenceObject :(List<Preference__c>)(trigger.new))    
 
         { 
-              List<Account> ListAccount = new List<Account>([select Primary_preference__c from Account where Id=:PreferenceObject.Name__c ]);
+            List<Account> ListAccount = new List<Account>([select Primary_preference__c from Account where Id=:PreferenceObject.Name__c ]);
+          
+               if(ListAccount.get(0).Primary_preference__c == null && PreferenceObject.Primary_preference__c==false)
+              {
+                 PreferenceObject .PreferenceName__c.addError('Primary Preference is must'); 
+                 
+              }
+              else{ 
               if( ListAccount.get(0).Primary_preference__c== PreferenceObject.PreferenceName__c)
               {
               PreferenceObject .PreferenceName__c.addError('This preference is already assigned as Primary Preference'); 
-              } 
+              }  
+              }
         }
      
 
